@@ -14,7 +14,7 @@ export default {
 </script>
 
 <template>
-  <div class="ac_container d-flex flex-column  flex-wrap">
+  <div class="ac_container d-flex flex-column flex-wrap">
     <Aside />
     <Header/> 
     <Main/>
