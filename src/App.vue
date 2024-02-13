@@ -20,6 +20,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+   @use '../scss/main.scss';
 </style>

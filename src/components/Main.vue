@@ -6,7 +6,7 @@ export default {
 
 
 <template>
-<main>Header</main>
+<main>Main</main>
 </template>
 
 
