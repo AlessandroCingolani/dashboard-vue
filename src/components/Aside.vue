@@ -15,14 +15,14 @@
     <div class="profile my-3 d-flex  align-items-center">
       <img src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp" alt="profile-img">
       <div class="welcome">
-        <h4>Welcome</h4>
-        <h5>Mario Rossi</h5>
+        <span class="fs-5">Welcome</span>
+        <h5 class="fw-medium">Mario Rossi</h5>
       </div>
     </div>
     <!-- general -->
     <nav>
       <div class="general">
-        <h5 class="text-uppercase">general</h5>
+        <h5 class="text-uppercase pb-1">general</h5>
       </div>
       
       <!-- accordion -->
@@ -100,11 +100,19 @@
 
 <style lang="scss" scoped>
   .title{
+    font-size: 1.3rem;
     &::before {
-      content: "-";
+      content: " - ";
     }
     &::after{
-      content: "-";
+      content: " - ";
+    }
+  }
+
+  .welcome {
+    span {
+      opacity: 0.7;
+      font-size: 1.2rem;
     }
   }
 
@@ -137,8 +145,15 @@
       --bs-accordion-body-padding-x: 0;
       --bs-accordion-btn-padding-x: 0;
       --bs-accordion-btn-padding-y: 10px;
+      
+      .accordion-button.collapsed::after{
+        filter: brightness(0) invert(1) !important;
+        
+      }
+      .accordion-button:not(.collapsed)::after{
+        filter: brightness(0) invert(1) !important;
 
-
+      }
       i {
         padding-right: 20px;
       }
