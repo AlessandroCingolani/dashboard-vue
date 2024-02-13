@@ -1,10 +1,3 @@
-<template>
-
-  <Aside />
-  <Header/> 
-  <Main/>
-</template>
-
 <script>
 import Aside from './components/Aside.vue'
 import Header from './components/Header.vue'
@@ -19,6 +12,14 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div class="ac_container d-flex flex-column  flex-wrap">
+    <Aside />
+    <Header/> 
+    <Main/>
+  </div>
+</template>
 
 <style lang="scss">
    @use '../scss/main.scss';
