@@ -46,7 +46,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-              <i class="fa-solid fa-house-chimney"></i> Home
+              <i class="fa-solid fa-map-location-dot"></i> Maps
             </button>
           </h2>
           <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -62,7 +62,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-              <i class="fa-solid fa-house-chimney"></i> Home
+              <i class="fa-solid fa-gear"></i> Config
             </button>
           </h2>
           <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -78,7 +78,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-              <i class="fa-solid fa-house-chimney"></i> Home
+              <i class="fa-solid fa-envelope"></i> Contacts
             </button>
           </h2>
           <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -122,9 +122,10 @@
 
   nav{
     .general {
-      border-bottom: 2px solid white;
+      border-bottom: 3px solid white;
     }
     .accordion{
+      margin-top: 20px;
       --bs-accordion-btn-bg: rgb(42, 64, 84);
       --bs-accordion-btn-color: white;
       --bs-accordion-btn-focus-box-shadow: none;
@@ -133,12 +134,20 @@
       --bs-accordion-bg:  rgb(42, 64, 84);
       --bs-accordion-active-color: white;
       --bs-accordion-active-bg:  rgb(42, 64, 84);
-      
+      --bs-accordion-body-padding-x: 0;
+      --bs-accordion-btn-padding-x: 0;
+      --bs-accordion-btn-padding-y: 10px;
+
+
+      i {
+        padding-right: 20px;
+      }
       a {
         text-decoration: none;
         color: white;
         display: inline-block;
         width: 100%;
+        padding: 4px 0 4px 40px;
         &:hover{
           background: lighten( rgb(42, 64, 84), $amount: 6);
         }
