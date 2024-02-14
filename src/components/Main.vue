@@ -62,15 +62,33 @@ export default {
           },
         ],
       },
-      chartData: {
+      dataBar: {
         labels: ["0-16", "17-25", "26-35", "36-45", "46-60"],
-        datasets: [{ data: [] }],
+
+        datasets: [
+          {
+            data: [],
+            backgroundColor: [
+              "rgb(62, 149, 205)",
+              "rgb(142, 94, 163)",
+              "rgb(90, 187, 159)",
+              "rgb(232, 195, 185)",
+              "rgb(196, 88, 80)",
+            ],
+          },
+        ],
       },
       dataDonut: {
         labels: ["Android", "iOS", "Windows", "Linux", "macOS"],
         datasets: [
           {
-            backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16"],
+            backgroundColor: [
+              "rgb(62, 149, 205)",
+              "rgb(142, 94, 163)",
+              "rgb(90, 187, 159)",
+              "rgb(232, 195, 185)",
+              "rgb(196, 88, 80)",
+            ],
             data: [],
           },
         ],
@@ -82,6 +100,11 @@ export default {
       optionsBar: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
       },
       optionsDonut: {
         responsive: true,
@@ -105,7 +128,7 @@ export default {
         this.dataDonut.datasets[0].data.push(connect.connections);
       });
       this.myData.UsersAgeRange.forEach((connect) => {
-        this.chartData.datasets[0].data.push(connect.connections);
+        this.dataBar.datasets[0].data.push(connect.connections);
       });
 
       this.loaded = true;
@@ -138,7 +161,7 @@ export default {
                 v-if="loaded"
                 id="my-chart-id"
                 :options="optionsBar"
-                :data="chartData"
+                :data="dataBar"
               />
             </div>
           </div>
