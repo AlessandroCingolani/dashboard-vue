@@ -37,6 +37,9 @@ export default {
       store,
       dateNow: "",
       hour: 0,
+      updateChartData: [],
+      minPercentage: -5,
+      maxPercentage: 5,
       myData: json,
       loaded: false,
       dataLine: {
@@ -169,16 +172,29 @@ export default {
   },
 
   methods: {
+    generateNumber() {
+      return Math.floor(
+        Math.random() * (this.maxPercentage - this.minPercentage + 1) +
+          this.minPercentage
+      );
+    },
     takeSolar() {
       this.dateNow = new Date();
       this.hour = this.dateNow.getHours() + 1;
-      console.log(this.hour);
-      this.chartData.datasets[0].data = [];
+      this.updateChartData = [];
       for (let i = 0; i < this.hour; i++) {
-        this.chartData.datasets[0].data.push(store.solarData[i]);
-        console.log(store.solarData[i]);
+        let percentage = this.generateNumber();
+        if (percentage <= 0) {
+          let result = store.solarData[i] + percentage;
+          if (result > 0 && result <= 100) {
+            this.updateChartData.push(result);
+          } else {
+            this.updateChartData.push(store.solarData[i]);
+          }
+        } else {
+          this.updateChartData.push(store.solarData[i]);
+        }
       }
-      console.log(this.chartData.datasets[0].data);
     },
   },
   computed: {
@@ -213,7 +229,7 @@ export default {
         datasets: [
           {
             label: "Daily",
-            data: store.solarData.slice(0, this.hour),
+            data: this.updateChartData.slice(0, this.hour),
             fill: true,
             borderColor: "rgb(75, 192, 192)",
             tension: 0.5,
