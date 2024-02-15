@@ -1,8 +1,7 @@
 <script>
-import { Bar } from "vue-chartjs";
-import { Doughnut } from "vue-chartjs";
-import { Line } from "vue-chartjs";
+import { Bar, Doughnut, Line } from "vue-chartjs";
 import json from "../data/json/data.json";
+import { store } from "../data/store";
 import {
   Chart as ChartJS,
   Title,
@@ -35,6 +34,9 @@ export default {
   components: { Bar, Doughnut, Line },
   data() {
     return {
+      store,
+      data: "",
+      hour: 0,
       myData: json,
       loaded: false,
       dataLine: {
@@ -93,6 +95,43 @@ export default {
           },
         ],
       },
+      dataGaussian: {
+        labels: [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+        ],
+        datasets: [
+          {
+            label: "Daily",
+            data: [],
+            fill: true,
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.5,
+          },
+        ],
+      },
       optionsLine: {
         responsive: true,
         maintainAspectRatio: false,
@@ -115,7 +154,28 @@ export default {
           },
         },
       },
+      optionsGaussian: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            type: "linear",
+            min: 0,
+            max: 100,
+          },
+        },
+      },
     };
+  },
+  methods: {
+    takeSolar() {
+      this.data = new Date();
+      this.hour = this.data.getHours() + 1;
+      console.log(this.hour);
+      for (let i = 0; i < this.hour; i++) {
+        this.dataGaussian.datasets[0].data.push(store.solarData[i]);
+      }
+    },
   },
 
   async mounted() {
@@ -130,7 +190,7 @@ export default {
       this.myData.UsersAgeRange.forEach((connect) => {
         this.dataBar.datasets[0].data.push(connect.connections);
       });
-
+      this.takeSolar();
       this.loaded = true;
     } catch (e) {
       console.error(e);
@@ -143,9 +203,10 @@ export default {
   <main>
     <div class="main_container">
       <div class="row mb-5">
+        <!-- Line chart -->
         <div class="line col">
           <div class="card h-100 text-center">
-            <div class="card-header">Monthly Connections</div>
+            <div class="card-header bg-white">Monthly Connections</div>
             <div class="card-body">
               <Line v-if="loaded" :data="dataLine" :options="optionsLine" />
             </div>
@@ -153,9 +214,10 @@ export default {
         </div>
       </div>
       <div class="row">
+        <!-- Bar chart -->
         <div class="bar col-lg-6 mb-5">
           <div class="card h-100 text-center">
-            <div class="card-header">User Age Range</div>
+            <div class="card-header bg-white">User Age Range</div>
             <div class="card-body">
               <Bar
                 v-if="loaded"
@@ -166,14 +228,39 @@ export default {
             </div>
           </div>
         </div>
+        <!-- Donut chart -->
         <div class="donut col-lg-6 mb-5">
           <div class="card h-100 text-center">
-            <div class="card-header">Operating System</div>
+            <div class="card-header bg-white">Operating System</div>
             <div class="card-body h-100">
               <Doughnut
                 v-if="loaded"
                 :data="dataDonut"
                 :options="optionsDonut"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gaussian chart -->
+      <div class="d-flex justify-content-center mb-4">
+        <div
+          @click="takeSolar"
+          class="play-btn d-flex justify-content-center align-items-center"
+        >
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+      <div class="row mb-5">
+        <div class="gaussian col">
+          <div class="card h-100 text-center">
+            <div class="card-header bg-white">Solar Power</div>
+            <div class="card-body">
+              <Line
+                v-if="loaded"
+                :data="dataGaussian"
+                :options="optionsGaussian"
               />
             </div>
           </div>
@@ -189,6 +276,20 @@ export default {
   gap: 30px;
   .line {
     height: 400px;
+  }
+  .gaussian {
+    height: 600px;
+  }
+  .play-btn {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    &:hover {
+      cursor: pointer;
+    }
+    i {
+      font-size: 1.8rem;
+    }
   }
 }
 </style>
