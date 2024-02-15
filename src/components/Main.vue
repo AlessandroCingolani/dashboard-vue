@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       store,
-      data: "",
+      dateNow: "",
       hour: 0,
       myData: json,
       loaded: false,
@@ -167,14 +167,59 @@ export default {
       },
     };
   },
+
   methods: {
     takeSolar() {
-      this.data = new Date();
-      this.hour = this.data.getHours() + 1;
+      this.dateNow = new Date();
+      this.hour = this.dateNow.getHours() + 1;
       console.log(this.hour);
+      this.chartData.datasets[0].data = [];
       for (let i = 0; i < this.hour; i++) {
-        this.dataGaussian.datasets[0].data.push(store.solarData[i]);
+        this.chartData.datasets[0].data.push(store.solarData[i]);
+        console.log(store.solarData[i]);
       }
+      console.log(this.chartData.datasets[0].data);
+    },
+  },
+  computed: {
+    chartData() {
+      return {
+        labels: [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+        ],
+        datasets: [
+          {
+            label: "Daily",
+            data: store.solarData.slice(0, this.hour),
+            fill: true,
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.5,
+          },
+        ],
+      };
     },
   },
 
@@ -190,7 +235,7 @@ export default {
       this.myData.UsersAgeRange.forEach((connect) => {
         this.dataBar.datasets[0].data.push(connect.connections);
       });
-      this.takeSolar();
+
       this.loaded = true;
     } catch (e) {
       console.error(e);
@@ -259,7 +304,7 @@ export default {
             <div class="card-body">
               <Line
                 v-if="loaded"
-                :data="dataGaussian"
+                :data="chartData"
                 :options="optionsGaussian"
               />
             </div>
