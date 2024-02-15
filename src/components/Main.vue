@@ -42,6 +42,7 @@ export default {
       maxPercentage: 5,
       myData: json,
       loaded: false,
+      // Data charts
       dataLine: {
         labels: [
           "January",
@@ -135,6 +136,9 @@ export default {
           },
         ],
       },
+      // End Data charts
+
+      // Options charts
       optionsLine: {
         responsive: true,
         maintainAspectRatio: false,
@@ -168,16 +172,19 @@ export default {
           },
         },
       },
+      // End options chart
     };
   },
 
   methods: {
+    // Generate random from -5 at 5 to take different solar value
     generateNumber() {
       return Math.floor(
         Math.random() * (this.maxPercentage - this.minPercentage + 1) +
           this.minPercentage
       );
     },
+    // At click take hour and generate random solar value display only at hour now
     takeSolar() {
       this.dateNow = new Date();
       this.hour = this.dateNow.getHours() + 1;
@@ -197,6 +204,7 @@ export default {
       }
     },
   },
+  // Computed refresh datas at change
   computed: {
     chartData() {
       return {
@@ -238,7 +246,7 @@ export default {
       };
     },
   },
-
+  // Async for take data charts
   async mounted() {
     this.loaded = false;
     try {
@@ -322,6 +330,39 @@ export default {
                 v-if="loaded"
                 :data="chartData"
                 :options="optionsGaussian"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Today -->
+      <div class="text-center mb-3">
+        <h1>Today</h1>
+      </div>
+      <div class="row">
+        <!-- Bar chart -->
+        <div class="bar col-lg-6 mb-5">
+          <div class="card h-100 text-center">
+            <div class="card-header bg-white">User Age Range</div>
+            <div class="card-body">
+              <Bar
+                v-if="loaded"
+                id="my-chart-id"
+                :options="optionsBar"
+                :data="dataBar"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- Donut chart -->
+        <div class="donut col-lg-6 mb-5">
+          <div class="card h-100 text-center">
+            <div class="card-header bg-white">Operating System</div>
+            <div class="card-body h-100">
+              <Doughnut
+                v-if="loaded"
+                :data="dataDonut"
+                :options="optionsDonut"
               />
             </div>
           </div>
