@@ -1,6 +1,7 @@
 <script>
 import { Bar, Doughnut, Line } from "vue-chartjs";
 import json from "../data/json/data.json";
+import connections from "../data/json/connections.json";
 import { store } from "../data/store";
 import {
   Chart as ChartJS,
@@ -38,9 +39,23 @@ export default {
       dateNow: "",
       hour: 0,
       updateChartData: [],
+      countByAge: {
+        "0-16": 0,
+        "17-25": 0,
+        "26-35": 0,
+        "36-45": 0,
+        "46-60": 0,
+      },
+      countByDevice: {
+        Android: 0,
+        Windows: 0,
+        Linux: 0,
+        iOs: 0,
+      },
       minPercentage: -5,
       maxPercentage: 5,
       myData: json,
+      todayConnections: connections,
       loaded: false,
       // Data charts
       dataLine: {
@@ -133,6 +148,36 @@ export default {
             fill: true,
             borderColor: "rgb(75, 192, 192)",
             tension: 0.5,
+          },
+        ],
+      },
+      todayAgeBar: {
+        labels: ["0-16", "17-25", "26-35", "36-45", "46-60"],
+
+        datasets: [
+          {
+            data: [],
+            backgroundColor: [
+              "rgb(62, 149, 205)",
+              "rgb(142, 94, 163)",
+              "rgb(90, 187, 159)",
+              "rgb(232, 195, 185)",
+              "rgb(196, 88, 80)",
+            ],
+          },
+        ],
+      },
+      todayDonut: {
+        labels: ["Android", "Windows", "Linux", "iOS"],
+        datasets: [
+          {
+            backgroundColor: [
+              "rgb(62, 149, 205)",
+              "rgb(142, 94, 163)",
+              "rgb(90, 187, 159)",
+              "rgb(232, 195, 185)",
+            ],
+            data: [],
           },
         ],
       },
@@ -250,6 +295,7 @@ export default {
   async mounted() {
     this.loaded = false;
     try {
+      // Data
       this.myData.MonthlyConnections.forEach((connect) => {
         this.dataLine.datasets[0].data.push(connect.connections);
       });
@@ -258,6 +304,33 @@ export default {
       });
       this.myData.UsersAgeRange.forEach((connect) => {
         this.dataBar.datasets[0].data.push(connect.connections);
+      });
+      // Connections
+
+      // if element is in object add +1 at counter corrispondent age
+      this.todayConnections.forEach((element) => {
+        if (element.age in this.countByAge) {
+          this.countByAge[element.age]++;
+        }
+      });
+      // take array of numbers from the object
+      let numbers = Object.values(this.countByAge);
+
+      numbers.forEach((number) => {
+        this.todayAgeBar.datasets[0].data.push(number);
+      });
+
+      // device
+      this.todayConnections.forEach((element) => {
+        if (element.device in this.countByDevice) {
+          this.countByDevice[element.device]++;
+        }
+      });
+      // take array of numbers from the object
+      let devices = Object.values(this.countByDevice);
+
+      devices.forEach((number) => {
+        this.todayDonut.datasets[0].data.push(number);
       });
 
       this.loaded = true;
@@ -345,12 +418,7 @@ export default {
           <div class="card h-100 text-center">
             <div class="card-header bg-white">User Age Range</div>
             <div class="card-body">
-              <Bar
-                v-if="loaded"
-                id="my-chart-id"
-                :options="optionsBar"
-                :data="dataBar"
-              />
+              <Bar v-if="loaded" :options="optionsBar" :data="todayAgeBar" />
             </div>
           </div>
         </div>
@@ -361,7 +429,7 @@ export default {
             <div class="card-body h-100">
               <Doughnut
                 v-if="loaded"
-                :data="dataDonut"
+                :data="todayDonut"
                 :options="optionsDonut"
               />
             </div>
